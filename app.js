@@ -2,6 +2,7 @@ const express = require('express')
 const { success, getUniqueId } = require('./helper.js')
 const favicon = require('serve-favicon')
 const morgan = require('morgan')
+const bodyParser = require('body-parser')
 let pokemons = require('./mock-pokemon')
 
 
@@ -11,6 +12,7 @@ const port = 3000
 app
   .use(favicon(__dirname + '/favicon.ico'))
   .use(morgan('dev'))
+  .use(bodyParser.json())
 
 app.get('/', (req,res) => res.send('Hello, Express 2 !'))
 
