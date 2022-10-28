@@ -14,15 +14,9 @@ app
 
 app.get('/', (req,res) => res.send('Hello, Express 2 !'))
 
-app.get('/api/pokemons/:id', (req,res) => {
-  const id = parseInt(req.params.id)
-  const pokemon = pokemons.find(pokemon => pokemon.id === id)
-  const message = 'Un pokemon a bien été trouvée.'
-  res.json(success(message, pokemon))
-})
 
 app.post('/api/pokemons', (req, res) => {
-  const id = getUniqueId(req.params.id)
+  const id = getUniqueId(pokemons)
   const pokemonCreated = { ...req.body, ...{id: id, created: new Date()}}
   pokemons.push(pokemonCreated)
   const message = `Le pokémons ${pokemonCreated.name} a bien été crée.`
@@ -32,7 +26,14 @@ app.post('/api/pokemons', (req, res) => {
 app.get('/api/pokemons', (req, res) => {
   const message = 'La liste des pokemons a bien été récupérée.'
   res.json(success(message, pokemons))
-  res.send(message, pokemons)
+  res.send(success(message, pokemons))
+})
+
+app.get('/api/pokemons/:id', (req,res) => {
+  const id = parseInt(req.params.id)
+  const pokemon = pokemons.find(pokemon => pokemon.id === id)
+  const message = 'Un pokemon a bien été trouvée.'
+  res.json(success(message, pokemon))
 })
 
 app.listen(port, () => console.log(`Notre application Node est démarrée sur : http://localhost:${port}`))
