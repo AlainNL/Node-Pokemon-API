@@ -7,5 +7,9 @@ module.exports = (app) => {
         const message = `Le pokémon ${req.body.name} a bien été crée.`
         res.json({ message, data: pokemon })
       })
+      .catch(error => {
+        const message = "La liste des pokémons n'a pu être récupérée. Réessayez quand quelques instanst."
+        res.status(500).json({message, data: error})
+      })
   })
 }
