@@ -3,7 +3,6 @@ const favicon = require('serve-favicon')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const sequelize = require('./src/db/sequelize')
-const { restart } = require('nodemon')
 
 const app = express()
 const port = 3000

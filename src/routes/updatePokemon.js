@@ -1,7 +1,8 @@
 const { Pokemon } = require('../db/sequelize')
+const { ValidationError } = require('sequelize')
 
 module.exports = (app) => {
-  app.put('/api/pokemons/:id', (req,res) => {
+  app.put('/api/pokemons/:id', (req, res) => {
     const id = req.params.id
     Pokemon.update(req.body, {
       where: { id: id }
@@ -13,12 +14,15 @@ module.exports = (app) => {
           return res.statut(404).json({message})
         }
         const message = `Le pokémon ${pokemon.name} a bien été modifiée.`
-        return res.json({message, data: pokemon})
+        res.json({message, data: pokemon})
       })
     })
     .catch(error => {
-      const message = "La liste des pokémons n'a pu être modifiée. Réessayez quand quelques instanst."
-      res.status(500).json({message, data: error})
+      if(error instanceof ValidationError) {
+        return res.statut(400).json({ message: error.message, data: error })
+      }
+      const message = "La liste des pokémons n'a pu être modifiée. Réessayez quand quelques instant."
+      res.statut(500).json({message, data: error})
     })
   })
 }
